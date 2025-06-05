@@ -87,7 +87,17 @@ Se desarrolló una aplicación interactiva con **Streamlit** donde el usuario pu
 - Visualizar la explicación del resultado y la seguridad del modelo.
   
 👉 [Prueba la app online aquí](https://fungiscan-eqh8bxu2ysfwrxoximq38a.streamlit.app/)
+
 ---
+
+## ¡Explora Nuestra Presentación en Prezi!
+
+Hemos preparado una presentación detallada para explicar el funcionamiento y las consideraciones clave detrás de FungiScan. ¡Descubre cómo la inteligencia artificial puede hacer el mundo de las setas más seguro!
+
+[![Visita la presentación en Prezi](https://img.shields.io/badge/Prezi-Ver%20Presentaci%C3%B3n-blue?style=for-the-badge&logo=prezi)](https://prezi.com/view/gh5B808tN8uloI4wx4Ng/)
+
+---
+
 
 <details>
   <summary>
