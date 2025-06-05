@@ -1,53 +1,53 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import GridSearchCV
 
-def load_chess_data(file_path):
-    try:
-        df = pd.read_csv(file_path)
-        print(f"Dataset cargado exitosamente desde: {file_path}")
-        print(f"Forma del dataset: {df.shape}")
-        print(df.head(), "\n")
-        return df
-    except FileNotFoundError:
-        print(f"Error: El archivo no se encontró en la ruta: {file_path}")
-        return None
-    except Exception as e:
-        print(f"Ocurrió un error al cargar el dataset: {e}")
-        return None
 
-def calculate_total_ply(moves_series):
-    return moves_series.apply(lambda x: len(str(x).split(' ')) if pd.notna(x) else np.nan)
+def optimize_model_with_gridsearch(model_base, param_grid, X_train, y_train, model_name="Modelo", cv=5, 
+scoring='f1_macro', n_jobs=-1, verbose=1):
+    # Configurar y Ejecutar GridSearchCV
+    grid_search = GridSearchCV(model_base, param_grid, cv=cv, scoring=scoring, n_jobs=n_jobs, verbose=verbose)
 
-def extract_time_controls(df):
+    # Entrenar el modelo con los datos de entrenamiento
+    grid_search.fit(X_train, y_train)
 
-    def parse_code(code):
-        try:
-            parts = str(code).split('+')
-            initial_time = int(parts[0])
-            increment = int(parts[1])
-            return initial_time, increment
-        except:
-            return np.nan, np.nan
+    # Mostrar los mejores hiperparámetros encontrados
+    best_params = grid_search.best_params_
+    print(f"\nMejores hiperparámetros encontrados para {model_name}: {best_params}")
 
-    df[['initial_time_minutes', 'increment_seconds']] = df['increment_code'].apply(
-        lambda x: pd.Series(parse_code(x))
-    )
+    # Accedemos al modelo mejor entrenado (el mejor estimador de Grid Search)
+    best_model = grid_search.best_estimator_
 
-    df.drop(columns=['increment_code'], inplace=True)
+    return best_model, best_params
 
-    return df
+def evaluate_and_report_model(model, X_train, y_train, X_test, y_test, label_encoder, model_name="Modelo"):
+    print(f"\n--- Evaluación del {model_name} ---")
 
-def normalize_features(X_train, X_test, normalizer=None):
-    if normalizer is None:
-        normalizer = MinMaxScaler()
+    # Predicciones en el conjunto de ENTRENAMIENTO
+    y_train_pred = model.predict(X_train)
+    print(f"\nRendimiento en el Conjunto de ENTRENAMIENTO ({model_name}):")
+    print("Reporte de Clasificación (Entrenamiento):\n",
+          classification_report(y_train, y_train_pred, target_names=label_encoder.classes_))
 
-    normalizer_fitted = normalizer.fit(X_train)
+    # Predicciones en el conjunto de PRUEBA
+    y_test_pred = model.predict(X_test)
+    print(f"\nRendimiento en el Conjunto de PRUEBA ({model_name}):")
+    print("Reporte de Clasificación (Prueba):\n",
+          classification_report(y_test, y_test_pred, target_names=label_encoder.classes_))
 
-    X_train_norm = normalizer_fitted.transform(X_train)
-    X_test_norm = normalizer_fitted.transform(X_test)
 
-    X_train_norm = pd.DataFrame(X_train_norm, columns=X_train.columns, index=X_train.index)
-    X_test_norm = pd.DataFrame(X_test_norm, columns=X_test.columns, index=X_test.index)
-
-    return X_train_norm, X_test_norm, normalizer_fitted
+    # Matriz de Confusión para el conjunto de prueba
+    print(f"\nMatriz de Confusión ({model_name} - Conjunto de Prueba):")
+    cm = confusion_matrix(y_test, y_test_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                xticklabels=label_encoder.classes_,
+                yticklabels=label_encoder.classes_)
+    plt.title(f'Matriz de Confusión para {model_name}')
+    plt.xlabel('Clase Predicha')
+    plt.ylabel('Clase Verdadera')
+    plt.show()
