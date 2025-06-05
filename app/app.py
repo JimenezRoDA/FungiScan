@@ -586,6 +586,13 @@ No nos limitaremos a decirte si una seta es comestible o venenosa. En futuras ve
 """)
 
     st.write("---")
+    st.markdown ("""
+                Si quereis saber más sobre el proceso de creación de la aplicación podeis hecharle un vistado a la presentación:
+                🚀 https://prezi.com/view/gh5B808tN8uloI4wx4Ng/
+                """)
+
+
+    st.write("---")
     st.subheader("💡 ¿Tienes ideas o sugerencias?")
 
     feedback = st.text_area("Cuéntanos cómo mejorar la app o qué te gustaría ver en el futuro:")
