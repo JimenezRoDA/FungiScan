@@ -1,0 +1,11 @@
+cap-shape,cap-surface,cap-color,bruises,gill-color,stalk-shape,stalk-surface-above-ring,stalk-surface-below-ring,stalk-color-above-ring,stalk-color-below-ring,veil-color,ring-number,ring-type,population,habitat
+x,s,n,t,k,e,s,s,w,w,w,o,p,s,u
+f,y,y,t,k,e,s,s,w,w,w,o,p,n,g
+f,s,n,f,n,t,s,s,w,w,w,o,p,s,d
+x,y,g,t,h,e,s,s,w,w,w,o,p,v,d
+x,s,e,t,k,e,s,s,w,w,w,o,p,s,u
+f,s,w,t,k,e,s,s,w,w,w,o,p,s,u
+x,s,g,f,k,t,s,s,w,w,w,o,p,s,d
+x,s,e,f,k,e,s,s,w,w,w,o,p,c,d
+f,y,n,f,n,e,y,y,n,n,w,o,p,s,g
+x,s,w,t,k,e,s,s,w,w,w,o,p,v,d
